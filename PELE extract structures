@@ -1,0 +1,43 @@
+
+import sys
+import math
+import os
+
+for file in sys.argv[1:]:
+    
+    bindingLst = []
+    model = []
+    modelsReduced = []
+    counter= 1
+    
+    write = False
+    print 'file', file
+    for line in open(file):
+        if not 'Task' in line: 
+            #print line
+            metric = float(line.split()[5])
+            SASA = float(line.split()[4])
+            NumberofMOdel= int(line.split()[2])
+            numbefofFile = file.split("_")[-1]
+
+            if metric < -20.0 and SASA <= 5: 
+                #write=True
+                write = False
+                #open(filepath, "w")
+                #fileout = open ('Simulation'+str(counter)+'_'+str(BindingEnergy)+'_'+'MODEL'+str(NumberofMOdel)+'.pdb','w')
+                for line in open('traj_ligand_.'+str(numbefofFile)+'.pdb'):
+                    if 'MODEL' in line:
+                        comprueba= int(line.split()[-1])
+                        if comprueba == NumberofMOdel+1:   # tengo que sumarle 1 #######
+                            print 'Match', numbefofFile, NumberofMOdel
+                            fileout = open ('snapshot_'+str(numbefofFile)+'_'+'MODEL'+str(comprueba)+'.pdb','w')
+                            write=True	
+
+                    if write==True:
+                        fileout.write(line)
+
+                    if 'ENDMDL' in line and write==True:
+                                        fileout.write(line)
+                                        counter += 1
+                                        fileout.close()
+                                        write=False

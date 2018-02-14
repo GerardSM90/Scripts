@@ -1,0 +1,24 @@
+#!/usr/bin/python 
+
+f = raw_input('Input file name: ')
+
+Entry = open(f, 'r')
+
+big= []
+
+for line in Entry:
+	if ( line.find('Found') == -1 and line.find('acceptor') == -1):
+		n = float(line.split()[2][0:line.split()[2].find('%')])
+		if (n >= 25.):
+			big.append(line)
+
+Entry.close()
+
+o = raw_input('Output file name: ')
+
+sortida = open(o,'w')
+
+for i in range(len(big)):
+	sortida.write(big[i])
+
+sortida.close()

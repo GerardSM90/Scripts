@@ -1,1 +1,53 @@
+import sys
+import math
+import os
+### INPUT ____TEST_*  ################################
+
+for file in sys.argv[1:]:
+
+    bindingLst = []
+    model = []
+    modelsReduced = []
+    #path = "/home/sandra2/workspace/test/Results"
+    counter= 1
+    '''
+    
+    '''
+
+    write = False
+    print 'Generating dir'
+    #os.mkdir('./Results') 
+    for line in open(file):
+        print 'file', file
+        if not 'Task' in line:
+            #print line
+            BindingEnergy= float(line.split()[6])
+            NumberofMOdel= float(line.split()[2])
+            numbefofFile = file[-1]
+            print 'numbero', numbefofFile
+            print 'Binding Energy'
+            if 'Binding Energy' < -35.0:
+                print 'TEST_BE', 'Binding Energy'
+                #write=True
+                write = False
+                #open(filepath, "w")
+                #fileout = open ('Simulation'+str(counter)+'_'+str(BindingEnergy)+'_'+'MODEL'+str(NumberofMOdel)+'.pdb','w')
+                for line in open('run_trajectory_'+str(numbefofFile)+'.pdb'):
+                        if 'MODEL' in line:
+                                print 'PRUEBA', NumberofMOdel
+                                comprueba= float(line.split()[-1])
+                                if comprueba+1 == NumberofMOdel:   # tengo que sumarle 1 #######
+                                        fileout = open ('Simulation'+str(numbefofFile)+'_'+str(BindingEnergy)+'_'+'MODEL'+str(comprueba)+'.pdb','w')
+                                        write=True
+                                        fileout.write(line)
+
+                        if write==True:
+                                fileout.write(line)
+
+                        if 'ENDMDL' in line and write==True:
+                                fileout.write(line)
+                                counter += 1
+                                fileout.close()
+                                write=False
+
 
